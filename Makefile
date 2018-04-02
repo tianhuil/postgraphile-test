@@ -4,7 +4,7 @@ SHELL=bash
 NETWORK_NAME=pgt-network
 
 DB_TAG=pgt-db-tag
-DB_WORKDIR=/var/workdir
+DB_WORKDIR=/var/workdir/db
 DB_NAME=pgt-postgres-name
 
 POSTGRES_USER=postgres_user
@@ -41,13 +41,15 @@ db:
 		--name $(DB_NAME) \
 		$(DB_TAG)
 
-schema:
-	docker exec -it $(DB_NAME) \
-		/bin/bash $(DB_WORKDIR)/load.sh schema.psql
-
 seed:
+	-docker exec -it $(DB_NAME) \
+		/bin/bash $(DB_WORKDIR)/load.sh schema-drop.sql
+
 	docker exec -it $(DB_NAME) \
-		/bin/bash $(DB_WORKDIR)/load.sh seed.psql
+		/bin/bash $(DB_WORKDIR)/load.sh schema.sql
+
+	docker exec -it $(DB_NAME) \
+		/bin/bash $(DB_WORKDIR)/load.sh data.sql
 
 api:
 	-docker rm -f $(API_NAME)
