@@ -15,6 +15,7 @@ POSTGRES_DB=postgres
 
 API_TAG=pgt-api-tag
 API_NAME=pgt-api-name
+API_WORKDIR=/var/workdir/api
 
 API_PORT=5000
 
@@ -55,9 +56,11 @@ api:
 	-docker rm -f $(API_NAME)
 
 	docker build -t $(API_TAG) \
+		--build-arg API_WORKDIR=$(API_WORKDIR) \
 		api/.
 
 	docker run -p $(API_PORT):$(API_PORT) -it \
+		--volume $(shell pwd)/api:$(API_WORKDIR):ro \
 		--network=$(NETWORK_NAME) \
 		-e API_PORT=$(API_PORT) \
 		-e POSTGRES_USER=$(POSTGRES_USER) \
