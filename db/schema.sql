@@ -34,6 +34,8 @@ create type forum_example.post_topic as enum (
   'showcase'
 );
 
+comment on type forum_example.post_topic is 'The topic of the post.';
+
 create table forum_example.post (
   id               serial primary key,
   author_id        integer not null references forum_example.person(id),
