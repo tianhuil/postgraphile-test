@@ -16,7 +16,6 @@ POSTGRES_DB=postgres
 API_TAG=pgt-api-tag
 API_NAME=pgt-api-name
 API_WORKDIR=/var/workdir/api
-
 API_PORT=5000
 
 network:
